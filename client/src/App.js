@@ -8,6 +8,9 @@ import AddCandidate from "./components/candidate/AddCandidate";
 import CandidateList from "./components/candidate/CandidateList";
 import Profile from "./components/admin/Profile";
 import CandidateProfile from "./components/candidate/CandidateProfile";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+
 
 function App() {
   return (
@@ -25,6 +28,7 @@ function App() {
           </Routes>
         </div>
       </main>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 }
