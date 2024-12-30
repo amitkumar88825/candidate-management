@@ -4,35 +4,68 @@ import { AuthContext } from "../authenticate/AuthContext";
 import axios from "axios";
 
 const CandidateProfile = () => {
-  const { candidate } = useContext(AuthContext); // Access the candidate data from context
-  const [candidateData, setCandidateData] = useState(null); // State to store candidate data
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const { candidate } = useContext(AuthContext);
+  const [candidateData, setCandidateData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [image, setImage] = useState(null); // State for profile image
+  const [imageLoading, setImageLoading] = useState(false); // Loading state for image upload
 
-  const candidateId = candidate?.id; // Make sure candidate ID is valid
+  const candidateId = candidate?.id;
 
   useEffect(() => {
-    // Fetch candidate data using API call
     const fetchCandidateData = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/candidate/${candidateId}`, {
           headers: {
-            Authorization: `Bearer ${candidate?.token}`, // Include token for authentication
+            Authorization: `Bearer ${candidate?.token}`,
           },
         });
-        setCandidateData(response.data); // Set the response data to state
+        setCandidateData(response.data);
+        // Set the profile image if available
+        setImage(response.data.profileImage);
       } catch (err) {
         console.error("Error fetching candidate data:", err);
         setError("Failed to load profile data.");
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false);
       }
     };
 
     if (candidateId) {
-      fetchCandidateData(); // Fetch data only if candidateId is available
+      fetchCandidateData();
     }
-  }, [candidateId, candidate?.token]); // Re-fetch when candidateId or token changes
+  }, [candidateId, candidate?.token]);
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      setImageLoading(true);
+      try {
+        const response = await axios.post(
+          `http://localhost:5000/api/candidate/profile/${candidateId}`,
+          formData,
+          {
+            headers: {
+              Authorization: `${candidate?.token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        // Set the uploaded image in the state
+        setCandidateData({ ...candidateData, profileImage: response.data.profileImage });
+        setImage(URL.createObjectURL(file)); // Preview the uploaded image
+      } catch (err) {
+        console.error("Error uploading image:", err);
+        setError("Failed to upload profile image.");
+      } finally {
+        setImageLoading(false);
+      }
+    }
+  };
 
   if (loading) {
     return <div className="text-center py-10">Loading...</div>;
@@ -51,9 +84,29 @@ const CandidateProfile = () => {
 
         {/* Profile Header with Icon and Name */}
         <div className="flex justify-center items-center mb-8">
-          {/* Profile Icon */}
-          <div className="flex justify-center items-center w-32 h-32 rounded-full bg-green-500 text-white text-6xl">
-            <FaUserAlt />
+          {/* Profile Image */}
+          <div className="relative">
+            <div className="w-32 h-32 rounded-full overflow-hidden">
+              {/* Display uploaded image or default icon */}
+              <img
+                src={image || candidateData?.profileImage || "https://via.placeholder.com/150"}
+                alt="Profile"
+                className="object-cover w-full h-full"
+              />
+            </div>
+            <label
+              htmlFor="file-upload"
+              className="absolute bottom-0 right-0 bg-blue-600 text-white rounded-full p-2 cursor-pointer"
+            >
+              {imageLoading ? "Uploading..." : "Change"}
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              className="hidden"
+              accept="image/*"
+              onChange={handleImageUpload}
+            />
           </div>
         </div>
 

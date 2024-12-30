@@ -15,6 +15,11 @@ const CandidateList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!admin || !admin.token) {
+      setError("You are not authorized. Please log in as admin.");
+      return;
+    }
+
     const fetchCandidates = async () => {
       setLoading(true);
       try {
@@ -36,8 +41,7 @@ const CandidateList = () => {
     };
 
     fetchCandidates();
-  }, [admin.token]);
-
+  }, [admin]); 
   const handleAddCandidate = () => {
     navigate("/admin/candidate/create");
   };

@@ -27,14 +27,11 @@ export const AuthContextProvider = ({ children }) => {
         }
     }
 
-    const logout = (type) => {
-        if(type === "admin") {
+    const logout = () => {
             setAdmin(null);
             localStorage.removeItem("admin");
-        } else {
             setCandidate(null);
             localStorage.removeItem("candidate");
-        }
     };
 
     return (

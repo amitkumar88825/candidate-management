@@ -7,6 +7,6 @@ router.post('/login', candidateController.login);
 
 router.get('/:id', candidateController.getCandidateById);
 
-router.put('/:id', candidateController.updateCandidateProfile);
+router.post('/profile/:id', candidateController.uploadProfileImage);
 
 module.exports = router;
