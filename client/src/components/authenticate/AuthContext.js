@@ -17,11 +17,13 @@ export const AuthContextProvider = ({ children }) => {
 
     const login = ({type, data, token}) => {
         if(type === "admin") {
-            setAdmin({...data, ['authToken']:token});
-            localStorage.setItem("admin", JSON.stringify(data));    
+            const adminInfo = {...data, ['token']:token}
+            setAdmin(adminInfo);
+            localStorage.setItem("admin", JSON.stringify(adminInfo));    
         } else {
-            setCandidate({...data, ['authToken']:token});
-            localStorage.setItem("candidate", JSON.stringify(data));    
+            const candidateInfo = {...data, ['token']:token}
+            setCandidate(candidateInfo);
+            localStorage.setItem("candidate", JSON.stringify(candidateInfo));    
         }
     }
 

@@ -12,19 +12,22 @@ const AdminLogin = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Email Validation Regex
   const validateEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
 
-    // Input Validation
     if (!validateEmail(email)) {
       toast.error("Please enter a valid email address");
       return;
@@ -43,10 +46,9 @@ const AdminLogin = () => {
         "http://localhost:5000/api/admin/login/",
         credentials
       );
-
       if (response.status === 200) {
         toast.success("Login successful!");
-        // login(response.data.user, response.data.token);
+        login({ type:"admin", data:response.data.admin, token: response.data.token});
         navigate("/admin/candidates");
       }
     } catch (err) {
@@ -88,7 +90,7 @@ const AdminLogin = () => {
           </div>
 
           {/* Password Input */}
-          <div className="mb-6">
+          <div className="mb-6 relative">
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-600 mb-2"
@@ -96,7 +98,7 @@ const AdminLogin = () => {
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -104,6 +106,13 @@ const AdminLogin = () => {
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="Enter your password"
             />
+            {/* Eye Icon for Show/Hide Password */}
+            <span
+              onClick={togglePasswordVisibility}
+              className="absolute right-3 top-11 cursor-pointer text-gray-600"
+            >
+              {showPassword ? "👁️" : "🔒"}
+            </span>
           </div>
 
           {/* Submit Button */}

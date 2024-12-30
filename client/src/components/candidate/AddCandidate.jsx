@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "../authenticate/AuthContext";
+
 
 const AddCandidate = () => {
+  const { admin } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate(); // useNavigate hook for redirection
+
+  // Handle Form Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     const candidateData = {
       name,
       mobile,
@@ -21,12 +31,33 @@ const AddCandidate = () => {
     };
 
     try {
-      const response = await axios.post("/api/candidates", candidateData);
-      setSuccess("Candidate added successfully!");
-      setError(""); // Clear any previous errors
+      await axios.post(
+        "http://localhost:5000/api/admin/candidates/create",
+        candidateData,
+        {
+          headers: {
+            Authorization: `${admin.token}`,
+          },
+        }
+      );
+      toast.success("Candidate added successfully!");
+
+      // Clear Form Fields
+      setName("");
+      setMobile("");
+      setAddress("");
+      setEmail("");
+      setPassword("");
+
+      // Redirect to the Candidates List Page
+      navigate("/admin/candidates");
     } catch (err) {
-      setError("Failed to add candidate.");
-      setSuccess(""); // Clear any previous success message
+      console.error(err);
+      toast.error(
+        err.response?.data?.message || "Failed to add candidate. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,9 +67,8 @@ const AddCandidate = () => {
         <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
           Add New Candidate
         </h2>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        {success && <p className="text-green-500 text-center mb-4">{success}</p>}
         <form onSubmit={handleSubmit}>
+          {/* Full Name */}
           <div className="mb-4">
             <label htmlFor="name" className="block text-sm font-medium text-gray-600 mb-2">
               Full Name
@@ -54,6 +84,7 @@ const AddCandidate = () => {
             />
           </div>
 
+          {/* Mobile Number */}
           <div className="mb-4">
             <label htmlFor="mobile" className="block text-sm font-medium text-gray-600 mb-2">
               Mobile Number
@@ -69,6 +100,7 @@ const AddCandidate = () => {
             />
           </div>
 
+          {/* Address */}
           <div className="mb-4">
             <label htmlFor="address" className="block text-sm font-medium text-gray-600 mb-2">
               Address
@@ -84,6 +116,7 @@ const AddCandidate = () => {
             />
           </div>
 
+          {/* Email */}
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-600 mb-2">
               Email
@@ -99,6 +132,7 @@ const AddCandidate = () => {
             />
           </div>
 
+          {/* Password */}
           <div className="mb-6">
             <label htmlFor="password" className="block text-sm font-medium text-gray-600 mb-2">
               Password
@@ -115,11 +149,17 @@ const AddCandidate = () => {
             />
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white p-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-300"
+            disabled={loading}
+            className={`w-full p-3 rounded-lg text-lg font-semibold transition duration-300 ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
           >
-            Add Candidate
+            {loading ? "Adding Candidate..." : "Add Candidate"}
           </button>
         </form>
       </div>

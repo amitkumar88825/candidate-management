@@ -1,28 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AuthContext } from "./AuthContext";
 import "react-toastify/dist/ReactToastify.css";
 import "../../App.css";
 
 const CandidateLogin = () => {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Email Validation Regex
   const validateEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
 
-    // Input Validation
     if (!validateEmail(email)) {
       toast.error("Please enter a valid email address");
       return;
@@ -44,6 +49,7 @@ const CandidateLogin = () => {
 
       if (response.status === 200) {
         toast.success("Login successful!");
+        login({ type:"admin", data:response.data.admin, token: response.data.token});
         navigate("/candidate/dashboard");
       }
     } catch (err) {
@@ -85,7 +91,7 @@ const CandidateLogin = () => {
           </div>
 
           {/* Password Input */}
-          <div className="mb-6">
+          <div className="mb-6 relative">
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-600 mb-2"
@@ -93,7 +99,7 @@ const CandidateLogin = () => {
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -101,6 +107,13 @@ const CandidateLogin = () => {
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="Enter your password"
             />
+            {/* Eye Icon for Show/Hide Password */}
+            <span
+              onClick={togglePasswordVisibility}
+              className="absolute right-3 top-11 cursor-pointer text-gray-600"
+            >
+              {showPassword ? "👁️" : "🔒"}
+            </span>
           </div>
 
           {/* Submit Button */}
