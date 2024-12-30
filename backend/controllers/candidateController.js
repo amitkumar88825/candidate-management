@@ -33,24 +33,28 @@ const login = async (req, res) => {
     }
 };
 
-// Get Candidate Profile by ID
+// Method to get candidate data by ID
 const getCandidateById = async (req, res) => {
     try {
-        const candidateId = req.params.id;
-
-        // Find candidate by ID
-        const candidate = await Candidate.findById(candidateId);
-        if (!candidate) {
-            return res.status(404).json({ message: "Candidate not found" });
-        }
-
-        // Return candidate profile
-        res.status(200).json(candidate);
+      const candidateId = req.params.id; // Get candidate ID from URL params
+  
+      // Validate the candidate ID is valid
+      if (!candidateId.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(400).json({ message: "Invalid candidate ID" });
+      }
+  
+      const candidate = await Candidate.findById(candidateId);
+  
+      if (!candidate) {
+        return res.status(404).json({ message: "Candidate not found" });
+      }
+  
+      res.status(200).json(candidate); // Send the candidate data as response
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Server error" });
+      console.error(error);
+      res.status(500).json({ message: "Server error. Please try again later." });
     }
-};
+  };
 
 // Update Candidate Profile
 const updateCandidateProfile = async (req, res) => {

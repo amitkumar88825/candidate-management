@@ -3,10 +3,10 @@ const router = express.Router();
 
 const candidateController = require('../controllers/candidateController.js')
 
-router.get('/login', candidateController.login);
+router.post('/login', candidateController.login);
 
-router.get('/profile/:candidateId', candidateController.getCandidateById);
+router.get('/:id', candidateController.getCandidateById);
 
-router.put('/profile/:condidateId', candidateController.updateCandidateProfile);
+router.put('/:id', candidateController.updateCandidateProfile);
 
 module.exports = router;

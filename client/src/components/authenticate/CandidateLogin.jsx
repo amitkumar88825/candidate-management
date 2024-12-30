@@ -43,14 +43,13 @@ const CandidateLogin = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/candidate/login/",
+        "http://localhost:5000/api/candidate/login/", 
         credentials
       );
-
       if (response.status === 200) {
         toast.success("Login successful!");
-        login({ type:"admin", data:response.data.admin, token: response.data.token});
-        navigate("/candidate/dashboard");
+        login({ type:"candidate", data:response.data.candidate, token: response.data.token});
+        navigate("/candidate/profile");
       }
     } catch (err) {
       console.error("Login failed:", err.response?.data?.message || err.message);
