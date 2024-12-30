@@ -43,7 +43,7 @@ const CandidateLogin = () => {
 
     try {
       const response = await axios.post(
-        "http://3.86.16.178/api/candidate/login/", 
+        "http://44.203.200.89/api/candidate/login/", 
         credentials
       );
       if (response.status === 200) {

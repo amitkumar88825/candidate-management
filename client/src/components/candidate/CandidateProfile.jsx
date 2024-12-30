@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { FaUserAlt } from "react-icons/fa";
 import { AuthContext } from "../authenticate/AuthContext";
 import axios from "axios";
 
@@ -46,7 +45,7 @@ const CandidateProfile = () => {
       setImageLoading(true);
       try {
         const response = await axios.post(
-          `http://3.86.16.178/api/candidate/profile/${candidateId}`,
+          `http://44.203.200.89/api/candidate/profile/${candidateId}`,
           formData,
           {
             headers: {
