@@ -118,6 +118,13 @@ Once both the client and server are running, you can access the full application
 
 ---
 
+## Important Rotes
+  admin/login
+    email - admin@gg.cc
+    pass - Admin@123
+  candidate/login
+
+
 ## Directory Structure
 
 ```
