@@ -43,7 +43,7 @@ const AdminLogin = () => {
 
     try {
       const response = await axios.post(
-        "http://http://3.86.16.178/api/admin/login/",
+        "http://3.86.16.178/api/admin/login/",
         credentials
       );
       if (response.status === 200) {

@@ -32,7 +32,7 @@ const AddCandidate = () => {
 
     try {
       await axios.post(
-        "http://http://3.86.16.178/api/admin/candidates/",
+        "http://3.86.16.178/api/admin/candidates/",
         candidateData,
         {
           headers: {

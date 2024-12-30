@@ -46,7 +46,7 @@ const CandidateProfile = () => {
       setImageLoading(true);
       try {
         const response = await axios.post(
-          `http://http://3.86.16.178/api/candidate/profile/${candidateId}`,
+          `http://3.86.16.178/api/candidate/profile/${candidateId}`,
           formData,
           {
             headers: {
