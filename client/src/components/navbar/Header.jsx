@@ -10,7 +10,7 @@ const Header = () => {
           <ul className="flex space-x-6">
             <li>
               <Link
-                to="candidates"
+                to="/admin/candidates"
                 className="text-lg hover:text-gray-200 transition duration-300"
               >
                 Candidates
@@ -18,7 +18,7 @@ const Header = () => {
             </li>
             <li>
               <Link
-                to="profile"
+                to="/admin/profile"
                 className="text-lg hover:text-gray-200 transition duration-300"
               >
                 Profile

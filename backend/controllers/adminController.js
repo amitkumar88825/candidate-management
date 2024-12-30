@@ -25,7 +25,7 @@ const login = async (req, res) => {
         const token = jwt.sign(
             { id: admin._id, email: admin.email },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' } 
+            { expiresIn: '1h' }
         );
 
         res.status(200).json({
@@ -36,6 +36,23 @@ const login = async (req, res) => {
     } catch (error) {
         console.error('Login Error:', error);
         res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+const getAdminById = async (req, res) => {
+    try {
+        const adminId = req.params.id;
+
+        const admin = await Admin.findById(adminId);
+
+        if (!admin) {
+            return res.status(404).json({ message: "Admin not found" });
+        }
+
+        res.status(200).json(admin);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error. Please try again later." }); 
     }
 };
 
@@ -61,6 +78,7 @@ const getCandidates = async (req, res) => {
         });
     }
 };
+
 const createCandidate = async (req, res) => {
     try {
         const { name, mobile, address, email, password } = req.body;
@@ -95,11 +113,12 @@ const createCandidate = async (req, res) => {
 
 const deleteCandidate = async (req, res) => {
     try {
-        // Candidate deletion logic here
-        res.status(200).json({ message: 'Candidate deleted successfully' });
+        const { id } = req.params;
+        await Candidate.findByIdAndDelete(id);
+        res.status(200).json({ success: true, message: "Candidate deleted successfully" });
     } catch (error) {
-        console.error('Delete Candidate Error:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        console.error("Error deleting candidate:", error);
+        res.status(500).json({ success: false, message: "Failed to delete candidate" });
     }
 };
 
@@ -107,5 +126,6 @@ module.exports = {
     login,
     getCandidates,
     createCandidate,
-    deleteCandidate
+    deleteCandidate,
+    getAdminById
 };

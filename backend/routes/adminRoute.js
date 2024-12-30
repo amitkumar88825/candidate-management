@@ -8,8 +8,10 @@ router.post('/login', adminController.login);
 
 router.get('/candidates', verifyToken, adminController.getCandidates);
 
-router.post('/candidates/create', verifyToken, adminController.createCandidate);
+router.get('/:id', verifyToken, adminController.getAdminById);
 
-router.delete('/candidates/delete/:candidateId', verifyToken, adminController.deleteCandidate);
+router.post('/candidates', verifyToken, adminController.createCandidate);
+
+router.delete('/candidate/:id', verifyToken, adminController.deleteCandidate);
 
 module.exports = router;

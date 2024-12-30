@@ -1,14 +1,46 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { FaUserAlt } from "react-icons/fa";
-
-// Dummy admin data
-const adminData = {
-  name: "John Admin",
-  email: "admin.john@example.com",
-  password: "********",
-};
+import { AuthContext } from "../authenticate/AuthContext";
+import axios from "axios";
 
 const Profile = () => {
+  const { admin } = useContext(AuthContext);
+  const [adminData, setAdminData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const adminId = admin.id; // Get the admin ID from AuthContext
+
+  useEffect(() => {
+    const fetchAdminData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/admin/${adminId}`, {
+          headers: {
+            Authorization: `${admin.token}`, // Pass the token for authentication
+          },
+        });
+        setAdminData(response.data); // Set the fetched admin data
+      } catch (err) {
+        console.error("Error fetching admin data:", err);
+        setError("Failed to load profile data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (adminId) {
+      fetchAdminData(); // Fetch data when the adminId is available
+    }
+  }, [adminId, admin.token]);
+
+  if (loading) {
+    return <div className="text-center py-10">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center py-10 text-red-500">{error}</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 py-6 px-4">
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
@@ -29,21 +61,21 @@ const Profile = () => {
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-xl font-semibold text-gray-700">Name</h2>
-              <p className="mt-2 text-gray-600">{adminData.name}</p>
+              <p className="mt-2 text-gray-600">{adminData?.name || "N/A"}</p>
             </div>
           </div>
 
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-xl font-semibold text-gray-700">Email</h2>
-              <p className="mt-2 text-gray-600">{adminData.email}</p>
+              <p className="mt-2 text-gray-600">{adminData?.email || "N/A"}</p>
             </div>
           </div>
 
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-xl font-semibold text-gray-700">Password</h2>
-              <p className="mt-2 text-gray-600">{adminData.password}</p>
+              <p className="mt-2 text-gray-600">********</p> {/* Masked password */}
             </div>
           </div>
         </div>
