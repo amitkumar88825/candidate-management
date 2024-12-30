@@ -16,7 +16,7 @@ const CandidateProfile = () => {
   useEffect(() => {
     const fetchCandidateData = async () => {
       try {
-        const response = await axios.get(`http://13.61.11.220/api/candidate/${candidateId}`, {
+        const response = await axios.get(`http://localhost:5000/api/candidate/${candidateId}`, {
           headers: {
             Authorization: `Bearer ${candidate?.token}`,
           },
@@ -46,7 +46,7 @@ const CandidateProfile = () => {
       setImageLoading(true);
       try {
         const response = await axios.post(
-          `http://13.61.11.220/api/candidate/profile/${candidateId}`,
+          `http://localhost:5000/api/candidate/profile/${candidateId}`,
           formData,
           {
             headers: {

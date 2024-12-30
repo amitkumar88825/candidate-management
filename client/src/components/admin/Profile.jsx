@@ -14,7 +14,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const response = await axios.get(`http://13.61.11.220/api/admin/${adminId}`, {
+        const response = await axios.get(`http://localhost:5000/api/admin/${adminId}`, {
           headers: {
             Authorization: `${admin.token}`, 
           },
