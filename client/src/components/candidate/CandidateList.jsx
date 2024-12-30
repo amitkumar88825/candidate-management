@@ -24,7 +24,7 @@ const CandidateList = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/admin/candidates",
+          "http://13.61.11.220/api/admin/candidates",
           {
             headers: {
               Authorization: `${admin.token}`,
@@ -59,7 +59,7 @@ const CandidateList = () => {
   const handleDeleteCandidate = async () => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/admin/candidate/${selectedCandidateId}`,
+        `http://13.61.11.220/api/admin/candidate/${selectedCandidateId}`,
         {
           headers: {
             Authorization: `${admin.token}`,
