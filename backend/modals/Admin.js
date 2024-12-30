@@ -1,27 +1,16 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
-const adminSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        match: [/.+@.+\..+/, 'Please enter a valid email address']
-    },
-    password: {
-        type: String,
-        required: true,
-        minlength: 6
-    },
-}, {
-    timestamps: true // Automatically adds createdAt and updatedAt fields
+const AdminSchema = new mongoose.Schema({
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
 });
 
-// Create the model
-const Admin = mongoose.model('Admin', adminSchema);
+// Hash password before saving
+AdminSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) return next();
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
+});
 
-module.exports = Admin;
+module.exports = mongoose.model('Admin', AdminSchema);
