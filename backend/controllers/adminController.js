@@ -106,6 +106,7 @@ const createCandidate = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         console.log(108)
+        console.log(109 , req.file.filename)
 
         const newCandidate = new Candidate({
             name,
@@ -113,7 +114,7 @@ const createCandidate = async (req, res) => {
             address,
             email,
             password: hashedPassword,
-            image: req.file ? `/uploads/candidates/${req.file.filename}` : null
+            image: `/uploads/candidates/${req.file.filename}`
         });
 
         console.log(109 , newCandidate)
