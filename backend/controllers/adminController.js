@@ -58,6 +58,7 @@ const getAdminById = async (req, res) => {
 
 const getCandidates = async (req, res) => {
     try {
+        console.log(61)
         const candidates = await Candidate.find({});
 
         if (!candidates || candidates.length === 0) {
