@@ -81,6 +81,9 @@ const getCandidates = async (req, res) => {
 
 const createCandidate = async (req, res) => {
     try {
+        console.log(84, req.body);
+        console.log(85, req.file); 
+
         const { name, mobile, address, email, password } = req.body;
 
         if (!name || !mobile || !address || !email || !password) {
@@ -100,6 +103,7 @@ const createCandidate = async (req, res) => {
             address,
             email,
             password: hashedPassword,
+            image: req.file ? `/uploads/candidates/${req.file.filename}` : null
         });
 
         await newCandidate.save();
