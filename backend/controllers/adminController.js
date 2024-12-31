@@ -61,9 +61,9 @@ const getCandidates = async (req, res) => {
         console.log(61)
         const candidates = await Candidate.find({});
 
-        if (!candidates || candidates.length === 0) {
-            return res.status(404).json({ message: "No candidates found." });
-        }
+        // if (!candidates || candidates.length === 0) {
+        //     return res.status(404).json({ message: "No candidates found." });
+        // }
 
         res.status(200).json({
             success: true,
