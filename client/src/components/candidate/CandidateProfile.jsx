@@ -48,7 +48,7 @@ const CandidateProfile = () => {
           formData,
           {
             headers: {
-              Authorization: `Bearer ${candidate?.token}`,
+              Authorization: `${candidate?.token}`,
               "Content-Type": "multipart/form-data",
             },
           }
