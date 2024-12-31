@@ -31,10 +31,8 @@ const CandidateList = () => {
             },
           }
         );
-        console.log(34, response.data.candidates);
         setCandidates(response.data.candidates || []);
       } catch (err) {
-        console.error("Error fetching candidates:", err);
         setError("Failed to fetch candidates. Please try again later.");
       } finally {
         setLoading(false);
@@ -73,7 +71,6 @@ const CandidateList = () => {
         prevCandidates.filter((candidate) => candidate._id !== selectedCandidateId)
       );
     } catch (err) {
-      console.error("Error deleting candidate:", err);
       toast.error("Failed to delete candidate. Please try again later.");
     } finally {
       closeConfirmModal();
@@ -117,7 +114,6 @@ const CandidateList = () => {
             <tbody>
               {candidates.map((candidate) => (
                 <tr key={candidate._id} className="border-b hover:bg-gray-50">
-                  {/* Profile Image */}
                   <td className="py-2 px-4 text-gray-700">
                     {candidate.image ? (
                       <img
@@ -131,17 +127,9 @@ const CandidateList = () => {
                       </div>
                     )}
                   </td>
-
-                  {/* Name */}
                   <td className="py-2 px-4 text-gray-700">{candidate.name}</td>
-
-                  {/* Email */}
                   <td className="py-2 px-4 text-gray-700">{candidate.email}</td>
-
-                  {/* Mobile */}
                   <td className="py-2 px-4 text-gray-700">{candidate.mobile}</td>
-
-                  {/* Actions */}
                   <td className="py-2 px-4 text-center">
                     <button
                       onClick={() => openConfirmModal(candidate._id)}
@@ -157,7 +145,6 @@ const CandidateList = () => {
           </table>
         )}
 
-        {/* Confirmation Modal */}
         {showConfirm && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg text-center">
