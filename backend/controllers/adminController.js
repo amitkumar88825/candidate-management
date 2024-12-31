@@ -58,7 +58,6 @@ const getAdminById = async (req, res) => {
 
 const getCandidates = async (req, res) => {
     try {
-        console.log(61)
         const candidates = await Candidate.find({});
 
         res.status(200).json({
