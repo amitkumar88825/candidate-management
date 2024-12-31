@@ -35,7 +35,6 @@ const login = async (req, res) => {
 
 const getCandidateById = async (req, res) => {
     try {
-        console.log(41 , 'sdkjfhskhdfk')
       const candidateId = req.params.id; 
   
       if (!candidateId.match(/^[0-9a-fA-F]{24}$/)) {
