@@ -6,14 +6,13 @@ const Header = () => {
   const { admin, candidate, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Handle the logout functionality and redirect to the appropriate login page
   const handleLogout = async () => {
     if (admin) {
-      await logout(); // Logout admin
-      navigate("/admin/login");  // Redirect to admin login page
+      await logout(); 
+      navigate("/admin/login");  
     } else if (candidate) {
-      await logout(); // Logout candidate
-      navigate("/candidate/login"); // Redirect to candidate login page
+      await logout(); 
+      navigate("/candidate/login"); 
     }
   };
 

@@ -35,13 +35,11 @@ const login = async (req, res) => {
     }
 };
 
-// Method to get candidate data by ID
 const getCandidateById = async (req, res) => {
     try {
         console.log(41 , 'sdkjfhskhdfk')
-      const candidateId = req.params.id; // Get candidate ID from URL params
+      const candidateId = req.params.id; 
   
-      // Validate the candidate ID is valid
       if (!candidateId.match(/^[0-9a-fA-F]{24}$/)) {
         return res.status(400).json({ message: "Invalid candidate ID" });
       }
@@ -52,20 +50,19 @@ const getCandidateById = async (req, res) => {
         return res.status(404).json({ message: "Candidate not found" });
       }
   
-      res.status(200).json(candidate); // Send the candidate data as response
+      res.status(200).json(candidate); 
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server error. Please try again later." });
     }
   };
 
-// Set up multer for handling image uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "uploads/");  // Define where images will be stored
+        cb(null, "uploads/");  
     },
     filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + path.extname(file.originalname);  // Ensure unique filenames
+        const uniqueSuffix = Date.now() + path.extname(file.originalname);  
         cb(null, file.fieldname + "-" + uniqueSuffix);
     },
 });
@@ -81,9 +78,8 @@ const upload = multer({
             cb(new Error("Only JPEG, PNG, and JPG files are allowed."), false);
         }
     },
-}).single("image"); // Expecting 'image' field for image upload
+}).single("image"); 
 
-// Update Candidate Profile
 const updateCandidateProfile = async (req, res) => {
     try {
         const candidateId = req.params.id;
@@ -121,27 +117,22 @@ const updateCandidateProfile = async (req, res) => {
     }
 };
 
-// Endpoint to upload the profile image
 const uploadProfileImage = (req, res) => {
     upload(req, res, async (err) => {
         if (err) {
             return res.status(400).json({ message: err.message });
         }
 
-        // Get the candidate ID from params
         const candidateId = req.params.id;
 
-        // Find candidate by ID
         const candidate = await Candidate.findById(candidateId);
         if (!candidate) {
             return res.status(404).json({ message: "Candidate not found" });
         }
 
-        // Update the profile image URL
         const profileImageUrl = `/uploads/${req.file.filename}`;
         candidate.profileImage = profileImageUrl;
 
-        // Save the updated candidate profile
         await candidate.save();
 
         res.status(200).json({ message: "Profile image uploaded successfully", profileImage: profileImageUrl });

@@ -7,8 +7,8 @@ const CandidateProfile = () => {
   const [candidateData, setCandidateData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [image, setImage] = useState(null); // State for profile image
-  const [imageLoading, setImageLoading] = useState(false); // Loading state for image upload
+  const [image, setImage] = useState(null); 
+  const [imageLoading, setImageLoading] = useState(false); 
 
   const candidateId = candidate?.id;
 
@@ -20,9 +20,7 @@ const CandidateProfile = () => {
             Authorization: `Bearer ${candidate?.token}`,
           },
         });
-        console.log(23, response.data)
         setCandidateData(response.data);
-        // Set the profile image if available
         setImage(response.data.profileImage);
       } catch (err) {
         console.error("Error fetching candidate data:", err);
@@ -55,9 +53,8 @@ const CandidateProfile = () => {
             },
           }
         );
-        // Set the uploaded image in the state
         setCandidateData({ ...candidateData, image: response.data.image });
-        setImage(URL.createObjectURL(file)); // Preview the uploaded image
+        setImage(URL.createObjectURL(file)); 
       } catch (err) {
         console.error("Error uploading image:", err);
         setError("Failed to upload profile image.");
@@ -82,12 +79,10 @@ const CandidateProfile = () => {
           Candidate Profile
         </h1>
 
-        {/* Profile Header with Icon and Name */}
         <div className="flex justify-center items-center mb-8">
           {/* Profile Image */}
           <div className="relative">
             <div className="w-32 h-32 rounded-full overflow-hidden">
-              {/* Display uploaded image or default icon */}
               <img
                 src={ `http://44.203.200.89${candidateData?.image}` || `https://via.placeholder.com/150` }
                 alt={candidate?.name}

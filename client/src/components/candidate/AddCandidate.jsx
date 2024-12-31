@@ -29,7 +29,7 @@ const AddCandidate = () => {
     formData.append("email", email);
     formData.append("password", password);
     if (image) {
-      formData.append("image", image); // Attach image if selected
+      formData.append("image", image); 
     }
 
     try {
@@ -45,7 +45,6 @@ const AddCandidate = () => {
       );
       toast.success("Candidate added successfully!");
 
-      // Clear Form Fields
       setName("");
       setMobile("");
       setAddress("");
