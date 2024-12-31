@@ -40,7 +40,7 @@ const CandidateProfile = () => {
     if (file) {
       const formData = new FormData();
       formData.append("image", file);
-
+  
       setImageLoading(true);
       try {
         const response = await axios.post(
@@ -54,7 +54,7 @@ const CandidateProfile = () => {
           }
         );
         setCandidateData({ ...candidateData, image: response.data.image });
-        setImage(URL.createObjectURL(file)); 
+        setImage(URL.createObjectURL(file));
       } catch (err) {
         console.error("Error uploading image:", err);
         setError("Failed to upload profile image.");
@@ -63,7 +63,7 @@ const CandidateProfile = () => {
       }
     }
   };
-
+  
   if (loading) {
     return <div className="text-center py-10">Loading...</div>;
   }

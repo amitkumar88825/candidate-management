@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Candidate = require("../modals/Candidate"); 
-const multer = require("multer");
 const path = require("path");
 
 const login = async (req, res) => {
@@ -58,7 +57,7 @@ const getCandidateById = async (req, res) => {
 };
 
 const uploadProfileImage = (req, res) => {
-    console.log(61 , ' sdkfhskdfkj ')
+    console.log(req.headers); // Log the headers to check if the token is being passed
     upload(req, res, async (err) => {
       if (err) {
         if (err.code === 'LIMIT_FILE_SIZE') {
@@ -87,6 +86,7 @@ const uploadProfileImage = (req, res) => {
       });
     });
   };
+  
   
 
 module.exports = {
