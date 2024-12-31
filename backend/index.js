@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const cors = require('cors');
+const path = require('path');
 const routes = require('./routes/index.js');
 
 const PORT = process.env.PORT;
@@ -18,7 +19,7 @@ app.get('/', (req, res) => {
   res.send('Welcome to my application!');
 });
 
-app.use("/uploads", express.static("uploads"));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api', routes());
 
