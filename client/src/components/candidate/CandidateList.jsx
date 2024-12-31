@@ -31,6 +31,7 @@ const CandidateList = () => {
             },
           }
         );
+        console.log(34 , response.data.candidates)
         setCandidates(response.data.candidates || []);
       } catch (err) {
         console.error("Error fetching candidates:", err);
