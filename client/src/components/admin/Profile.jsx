@@ -17,7 +17,7 @@ const Profile = () => {
         if(adminId) {
           const response = await axios.get(`http://44.203.200.89/api/admin/${adminId}`, {
             headers: {
-              Authorization: `${admin.token}`, 
+              Authorization: `${admin?.token}`, 
             },
           });
           setAdminData(response.data); 

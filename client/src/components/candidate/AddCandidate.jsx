@@ -1,10 +1,9 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../authenticate/AuthContext";
-
 
 const AddCandidate = () => {
   const { admin } = useContext(AuthContext);
@@ -13,6 +12,7 @@ const AddCandidate = () => {
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate(); // useNavigate hook for redirection
@@ -22,21 +22,24 @@ const AddCandidate = () => {
     e.preventDefault();
     setLoading(true);
 
-    const candidateData = {
-      name,
-      mobile,
-      address,
-      email,
-      password,
-    };
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("mobile", mobile);
+    formData.append("address", address);
+    formData.append("email", email);
+    formData.append("password", password);
+    if (image) {
+      formData.append("image", image); // Attach image if selected
+    }
 
     try {
       await axios.post(
         "http://44.203.200.89/api/admin/candidates/",
-        candidateData,
+        formData,
         {
           headers: {
             Authorization: `${admin.token}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -48,6 +51,7 @@ const AddCandidate = () => {
       setAddress("");
       setEmail("");
       setPassword("");
+      setImage(null);
 
       // Redirect to the Candidates List Page
       navigate("/admin/candidates");
@@ -67,7 +71,7 @@ const AddCandidate = () => {
         <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
           Add New Candidate
         </h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
           {/* Full Name */}
           <div className="mb-4">
             <label htmlFor="name" className="block text-sm font-medium text-gray-600 mb-2">
@@ -133,7 +137,7 @@ const AddCandidate = () => {
           </div>
 
           {/* Password */}
-          <div className="mb-6">
+          <div className="mb-4">
             <label htmlFor="password" className="block text-sm font-medium text-gray-600 mb-2">
               Password
             </label>
@@ -146,6 +150,20 @@ const AddCandidate = () => {
               minLength="6"
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="Enter password"
+            />
+          </div>
+
+          {/* Image Upload */}
+          <div className="mb-6">
+            <label htmlFor="image" className="block text-sm font-medium text-gray-600 mb-2">
+              Upload Image
+            </label>
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files[0])}
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none"
             />
           </div>
 
