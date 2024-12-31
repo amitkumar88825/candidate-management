@@ -81,32 +81,18 @@ const getCandidates = async (req, res) => {
 
 const createCandidate = async (req, res) => {
     try {
-        console.log(84, req.body);
-        console.log(85, req.file); 
-
         const { name, mobile, address, email, password } = req.body;
-
-        console.log(89)
 
         if (!name || !mobile || !address || !email || !password) {
             return res.status(400).json({ message: 'All fields are required' });
         }
-
-        console.log(95)
-
 
         const existingCandidate = await Candidate.findOne({ email });
         if (existingCandidate) {
             return res.status(400).json({ message: 'Candidate with this email already exists' });
         }
 
-        console.log(103)
-
-
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        console.log(108)
-        console.log(109 , req.file.filename)
 
         const newCandidate = new Candidate({
             name,
@@ -114,14 +100,10 @@ const createCandidate = async (req, res) => {
             address,
             email,
             password: hashedPassword,
-            image: `/uploads/candidates/${req.file.filename}`
+            image: `/uploads/${req.file.filename}`
         });
 
-        console.log(109 , newCandidate)
-
         const data = await newCandidate.save();
-
-        console.log(123 , data);
 
         res.status(201).json({ message: 'Candidate created successfully', candidate: newCandidate });
     } catch (error) {
