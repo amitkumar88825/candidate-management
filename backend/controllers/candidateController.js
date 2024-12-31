@@ -55,66 +55,6 @@ const getCandidateById = async (req, res) => {
       console.error(error);
       res.status(500).json({ message: "Server error. Please try again later." });
     }
-  };
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads/");  
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + path.extname(file.originalname);  
-        cb(null, file.fieldname + "-" + uniqueSuffix);
-    },
-});
-
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 },  // Max file size 5MB
-    fileFilter: (req, file, cb) => {
-        const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-        if (allowedTypes.includes(file.mimetype)) {
-            cb(null, true);
-        } else {
-            cb(new Error("Only JPEG, PNG, and JPG files are allowed."), false);
-        }
-    },
-}).single("image"); 
-
-const updateCandidateProfile = async (req, res) => {
-    try {
-        const candidateId = req.params.id;
-        const { name, email, password } = req.body;
-
-        // Find candidate by ID
-        const candidate = await Candidate.findById(candidateId);
-        if (!candidate) {
-            return res.status(404).json({ message: "Candidate not found" });
-        }
-
-        // Handle file upload (profile picture)
-        if (req.file) {
-            const profileImageUrl = `/uploads/${req.file.filename}`;  // Store image URL
-            candidate.profileImage = profileImageUrl;
-        }
-
-        // Update fields (Ensure that you hash the new password if it's updated)
-        if (password) {
-            const salt = await bcrypt.genSalt(10);
-            candidate.password = await bcrypt.hash(password, salt);
-        }
-
-        if (name) candidate.name = name;
-        if (email) candidate.email = email;
-
-        // Save the updated candidate
-        await candidate.save();
-
-        // Return updated candidate profile
-        res.status(200).json({ message: "Profile updated", candidate });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Server error" });
-    }
 };
 
 const uploadProfileImage = (req, res) => {
@@ -142,6 +82,5 @@ const uploadProfileImage = (req, res) => {
 module.exports = {
     login,
     getCandidateById,
-    updateCandidateProfile,
     uploadProfileImage
 };
