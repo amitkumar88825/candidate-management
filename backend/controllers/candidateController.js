@@ -38,6 +38,7 @@ const login = async (req, res) => {
 // Method to get candidate data by ID
 const getCandidateById = async (req, res) => {
     try {
+        console.log(41 , 'sdkjfhskhdfk')
       const candidateId = req.params.id; // Get candidate ID from URL params
   
       // Validate the candidate ID is valid
