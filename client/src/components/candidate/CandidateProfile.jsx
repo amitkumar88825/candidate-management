@@ -7,8 +7,6 @@ const CandidateProfile = () => {
   const [candidateData, setCandidateData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [image, setImage] = useState(null); 
-  const [imageLoading, setImageLoading] = useState(false); 
 
   const candidateId = candidate?.id;
 
@@ -21,7 +19,6 @@ const CandidateProfile = () => {
           },
         });
         setCandidateData(response.data);
-        setImage(response.data.profileImage);
       } catch (err) {
         console.error("Error fetching candidate data:", err);
         setError("Failed to load profile data.");
@@ -35,35 +32,6 @@ const CandidateProfile = () => {
     }
   }, [candidateId, candidate?.token]);
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append("image", file);
-  
-      setImageLoading(true);
-      try {
-        const response = await axios.post(
-          `http://44.203.200.89/api/candidate/profile/${candidateId}`,
-          formData,
-          {
-            headers: {
-              Authorization: `${candidate?.token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        setCandidateData({ ...candidateData, image: response.data.image });
-        setImage(URL.createObjectURL(file));
-      } catch (err) {
-        console.error("Error uploading image:", err);
-        setError("Failed to upload profile image.");
-      } finally {
-        setImageLoading(false);
-      }
-    }
-  };
-  
   if (loading) {
     return <div className="text-center py-10">Loading...</div>;
   }
@@ -88,19 +56,6 @@ const CandidateProfile = () => {
                 className="object-cover w-full h-full"
               />
             </div>
-            <label
-              htmlFor="file-upload"
-              className="absolute bottom-0 right-0 bg-blue-600 text-white rounded-full p-2 cursor-pointer"
-            >
-              {imageLoading ? "Uploading..." : "Change"}
-            </label>
-            <input
-              id="file-upload"
-              type="file"
-              className="hidden"
-              accept="image/*"
-              onChange={handleImageUpload}
-            />
           </div>
         </div>
 
