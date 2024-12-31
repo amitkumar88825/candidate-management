@@ -20,6 +20,7 @@ const CandidateProfile = () => {
             Authorization: `Bearer ${candidate?.token}`,
           },
         });
+        console.log(23, responce.data)
         setCandidateData(response.data);
         // Set the profile image if available
         setImage(response.data.profileImage);
@@ -55,7 +56,7 @@ const CandidateProfile = () => {
           }
         );
         // Set the uploaded image in the state
-        setCandidateData({ ...candidateData, profileImage: response.data.profileImage });
+        setCandidateData({ ...candidateData, image: response.data.image });
         setImage(URL.createObjectURL(file)); // Preview the uploaded image
       } catch (err) {
         console.error("Error uploading image:", err);
@@ -88,8 +89,8 @@ const CandidateProfile = () => {
             <div className="w-32 h-32 rounded-full overflow-hidden">
               {/* Display uploaded image or default icon */}
               <img
-                src={image || candidateData?.profileImage || "https://via.placeholder.com/150"}
-                alt="Profile"
+                src={ `http://44.203.200.89${candidateData?.image}` || `https://via.placeholder.com/150` }
+                alt={candidate?.name}
                 className="object-cover w-full h-full"
               />
             </div>
@@ -114,35 +115,44 @@ const CandidateProfile = () => {
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-xl font-semibold text-gray-700">Name</h2>
-              <p className="mt-2 text-gray-600">{candidateData?.name || "N/A"}</p>
+              <p className="mt-2 text-gray-600">
+                {candidateData?.name || "N/A"}
+              </p>
             </div>
           </div>
 
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-xl font-semibold text-gray-700">Email</h2>
-              <p className="mt-2 text-gray-600">{candidateData?.email || "N/A"}</p>
+              <p className="mt-2 text-gray-600">
+                {candidateData?.email || "N/A"}
+              </p>
             </div>
           </div>
 
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-xl font-semibold text-gray-700">Mobile</h2>
-              <p className="mt-2 text-gray-600">{candidateData?.mobile || "N/A"}</p>
+              <p className="mt-2 text-gray-600">
+                {candidateData?.mobile || "N/A"}
+              </p>
             </div>
           </div>
 
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-xl font-semibold text-gray-700">Address</h2>
-              <p className="mt-2 text-gray-600">{candidateData?.address || "N/A"}</p>
+              <p className="mt-2 text-gray-600">
+                {candidateData?.address || "N/A"}
+              </p>
             </div>
           </div>
 
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-xl font-semibold text-gray-700">Password</h2>
-              <p className="mt-2 text-gray-600">********</p> {/* Masked password */}
+              <p className="mt-2 text-gray-600">********</p>{" "}
+              {/* Masked password */}
             </div>
           </div>
         </div>
