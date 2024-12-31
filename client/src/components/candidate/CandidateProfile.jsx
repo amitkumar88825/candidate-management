@@ -17,7 +17,7 @@ const CandidateProfile = () => {
       try {
         const response = await axios.get(`http://44.203.200.89/api/candidate/${candidateId}`, {
           headers: {
-            Authorization: `Bearer ${candidate?.token}`,
+            Authorization: `${candidate?.token}`,
           },
         });
         setCandidateData(response.data);
