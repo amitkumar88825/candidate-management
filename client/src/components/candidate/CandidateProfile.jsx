@@ -20,7 +20,7 @@ const CandidateProfile = () => {
             Authorization: `Bearer ${candidate?.token}`,
           },
         });
-        console.log(23, responce.data)
+        console.log(23, response.data)
         setCandidateData(response.data);
         // Set the profile image if available
         setImage(response.data.profileImage);
