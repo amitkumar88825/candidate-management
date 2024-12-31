@@ -48,7 +48,7 @@ const CandidateProfile = () => {
           formData,
           {
             headers: {
-              Authorization: `${candidate?.token}`,
+              Authorization: `Bearer ${candidate?.token}`,
               "Content-Type": "multipart/form-data",
             },
           }
@@ -80,11 +80,10 @@ const CandidateProfile = () => {
         </h1>
 
         <div className="flex justify-center items-center mb-8">
-          {/* Profile Image */}
           <div className="relative">
             <div className="w-32 h-32 rounded-full overflow-hidden">
               <img
-                src={ `http://44.203.200.89${candidateData?.image}` || `https://via.placeholder.com/150` }
+                src={candidateData?.image ? `http://44.203.200.89${candidateData?.image}` : `https://via.placeholder.com/150`}
                 alt={candidate?.name}
                 className="object-cover w-full h-full"
               />
@@ -105,7 +104,6 @@ const CandidateProfile = () => {
           </div>
         </div>
 
-        {/* Profile Details */}
         <div className="space-y-6">
           <div className="flex justify-between items-center">
             <div>
@@ -146,8 +144,7 @@ const CandidateProfile = () => {
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-xl font-semibold text-gray-700">Password</h2>
-              <p className="mt-2 text-gray-600">********</p>{" "}
-              {/* Masked password */}
+              <p className="mt-2 text-gray-600">********</p>
             </div>
           </div>
         </div>
