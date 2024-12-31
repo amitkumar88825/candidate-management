@@ -31,7 +31,7 @@ const CandidateList = () => {
             },
           }
         );
-        console.log(34 , response.data.candidates)
+        console.log(34, response.data.candidates);
         setCandidates(response.data.candidates || []);
       } catch (err) {
         console.error("Error fetching candidates:", err);
@@ -42,7 +42,8 @@ const CandidateList = () => {
     };
 
     fetchCandidates();
-  }, [admin]); 
+  }, [admin]);
+
   const handleAddCandidate = () => {
     navigate("/admin/candidate/create");
   };
@@ -91,9 +92,7 @@ const CandidateList = () => {
     <div className="min-h-screen bg-gray-100 py-6 px-4">
       <div className="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-lg">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-semibold text-gray-800">
-            Candidates List
-          </h1>
+          <h1 className="text-3xl font-semibold text-gray-800">Candidates List</h1>
           <button
             onClick={handleAddCandidate}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition duration-300"
@@ -108,26 +107,41 @@ const CandidateList = () => {
           <table className="min-w-full table-auto border-collapse">
             <thead>
               <tr className="border-b bg-gray-50">
-                <th className="py-2 px-4 text-left text-gray-600 font-semibold">
-                  Name
-                </th>
-                <th className="py-2 px-4 text-left text-gray-600 font-semibold">
-                  Email
-                </th>
-                <th className="py-2 px-4 text-left text-gray-600 font-semibold">
-                  Mobile
-                </th>
-                <th className="py-2 px-4 text-center text-gray-600 font-semibold">
-                  Action
-                </th>
+                <th className="py-2 px-4 text-left text-gray-600 font-semibold">Profile Image</th>
+                <th className="py-2 px-4 text-left text-gray-600 font-semibold">Name</th>
+                <th className="py-2 px-4 text-left text-gray-600 font-semibold">Email</th>
+                <th className="py-2 px-4 text-left text-gray-600 font-semibold">Mobile</th>
+                <th className="py-2 px-4 text-center text-gray-600 font-semibold">Action</th>
               </tr>
             </thead>
             <tbody>
               {candidates.map((candidate) => (
                 <tr key={candidate._id} className="border-b hover:bg-gray-50">
+                  {/* Profile Image */}
+                  <td className="py-2 px-4 text-gray-700">
+                    {candidate.image ? (
+                      <img
+                        src={`http://44.203.200.89${candidate.image}`}
+                        alt={candidate.name}
+                        className="w-12 h-12 rounded-full object-cover border"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                        N/A
+                      </div>
+                    )}
+                  </td>
+
+                  {/* Name */}
                   <td className="py-2 px-4 text-gray-700">{candidate.name}</td>
+
+                  {/* Email */}
                   <td className="py-2 px-4 text-gray-700">{candidate.email}</td>
+
+                  {/* Mobile */}
                   <td className="py-2 px-4 text-gray-700">{candidate.mobile}</td>
+
+                  {/* Actions */}
                   <td className="py-2 px-4 text-center">
                     <button
                       onClick={() => openConfirmModal(candidate._id)}
@@ -143,6 +157,7 @@ const CandidateList = () => {
           </table>
         )}
 
+        {/* Confirmation Modal */}
         {showConfirm && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg text-center">

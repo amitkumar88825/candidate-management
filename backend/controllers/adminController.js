@@ -106,6 +106,8 @@ const createCandidate = async (req, res) => {
             image: req.file ? `/uploads/candidates/${req.file.filename}` : null
         });
 
+        console.log(109 , newCandidate)
+
         await newCandidate.save();
 
         res.status(201).json({ message: 'Candidate created successfully', candidate: newCandidate });
