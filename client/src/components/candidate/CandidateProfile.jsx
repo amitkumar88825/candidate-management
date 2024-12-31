@@ -15,7 +15,7 @@ const CandidateProfile = () => {
   useEffect(() => {
     const fetchCandidateData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/candidate/${candidateId}`, {
+        const response = await axios.get(`http://44.203.200.89/api/candidate/${candidateId}`, {
           headers: {
             Authorization: `Bearer ${candidate?.token}`,
           },
