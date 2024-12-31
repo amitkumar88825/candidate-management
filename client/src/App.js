@@ -37,6 +37,7 @@ function App() {
             <Route path="/admin/candidates" element={<CandidateList />} />
             <Route path="/candidate/login" element={<CandidateLogin />} />
             <Route path="/candidate/profile" element={<CandidateProfile />} />
+            <Route path="*" element={<div>Page Not Found</div>} />
           </Routes>
         </div>
       </main>
