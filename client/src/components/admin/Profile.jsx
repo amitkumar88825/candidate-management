@@ -9,19 +9,26 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const adminId = admin?.id || null; // Get the admin ID from AuthContext
+  const adminId = admin?.id || null; 
 
   useEffect(() => {
     const fetchAdminData = async () => {
+      if (!adminId || !admin?.token) {
+        setError("Admin not authenticated.");
+        setLoading(false);
+        return;
+      }
+
       try {
-        if(adminId) {
-          const response = await axios.get(`http://44.203.200.89/api/admin/${adminId}`, {
+        const response = await axios.get(
+          `http://44.203.200.89/api/admin/${adminId}`,
+          {
             headers: {
               Authorization: `${admin?.token}`, 
             },
-          });
-          setAdminData(response.data); 
-        }
+          }
+        );
+        setAdminData(response.data); 
       } catch (err) {
         console.error("Error fetching admin data:", err);
         setError("Failed to load profile data.");
@@ -30,10 +37,8 @@ const Profile = () => {
       }
     };
 
-    if (adminId) {
-      fetchAdminData(); // Fetch data when the adminId is available
-    }
-  }, [adminId, admin.token]);
+    fetchAdminData(); 
+  }, [adminId, admin?.token]); 
 
   if (loading) {
     return <div className="text-center py-10">Loading...</div>;
