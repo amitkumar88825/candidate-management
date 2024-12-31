@@ -14,10 +14,6 @@ This is a **CRUD-based web application** designed to manage candidates in a recr
   - [Clone the Repository](#clone-the-repository)
   - [Client-Side Setup](#client-side-setup)
   - [Server-Side Setup](#server-side-setup)
-- [API Endpoints](#api-endpoints)
-- [Directory Structure](#directory-structure)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Technologies Used
 
