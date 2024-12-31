@@ -8,6 +8,4 @@ router.post('/login', candidateController.login);
 
 router.get('/:id',verifyToken , candidateController.getCandidateById);
 
-router.post('/profile/:id', verifyToken, candidateController.uploadProfileImage);
-
 module.exports = router;

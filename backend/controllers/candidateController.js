@@ -1,8 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Candidate = require("../modals/Candidate"); 
-const path = require("path");
-const upload = require('../middleware/upload.js');
 
 const login = async (req, res) => {
     try {
@@ -57,41 +55,9 @@ const getCandidateById = async (req, res) => {
     }
 };
 
-const uploadProfileImage = (req, res) => {
-    console.log(req.headers); // Log the headers to check if the token is being passed
-    upload(req, res, async (err) => {
-      if (err) {
-        if (err.code === 'LIMIT_FILE_SIZE') {
-          return res.status(400).json({ message: 'File size is too large. Maximum allowed size is 5MB.' });
-        } else if (err.message.includes('Invalid file type')) {
-          return res.status(400).json({ message: 'Invalid file type. Only image files are allowed.' });
-        } else {
-          return res.status(400).json({ message: err.message });
-        }
-      }
-  
-      const candidateId = req.params.id;
-      const candidate = await Candidate.findById(candidateId);
-      if (!candidate) {
-        return res.status(404).json({ message: "Candidate not found" });
-      }
-  
-      const profileImageUrl = `/uploads/${req.file.filename}`;
-      candidate.profileImage = profileImageUrl;
-  
-      await candidate.save();
-  
-      res.status(200).json({
-        message: "Profile image uploaded successfully",
-        image: profileImageUrl
-      });
-    });
-  };
-  
   
 
 module.exports = {
     login,
     getCandidateById,
-    uploadProfileImage
 };
