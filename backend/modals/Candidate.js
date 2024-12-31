@@ -27,7 +27,7 @@ const candidateSchema = new mongoose.Schema({
         required: true,
         minlength: 6
     },
-    profileImage: { type: String },
+    image: { type: String },
 }, {
     timestamps: true
 });
