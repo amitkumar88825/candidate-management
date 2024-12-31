@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Candidate = require("../modals/Candidate"); 
 const path = require("path");
+const upload = require('../middleware/upload.js');
 
 const login = async (req, res) => {
     try {
